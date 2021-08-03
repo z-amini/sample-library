@@ -1,0 +1,7 @@
+# Python 3.8
+Django
+djangorestframework
+django_filter
+
+# Development
+black
