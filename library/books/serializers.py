@@ -35,8 +35,9 @@ class BorrowSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         try:
-            Borrow(**self.validated_data, **kwargs).clean()
-            return super(BorrowSerializer, self).save()
+            if not self.instance:
+                Borrow(**self.validated_data, **kwargs).clean()
+            return super(BorrowSerializer, self).save(**kwargs)
         except Exception as e:
             raise ValidationError(e)
 

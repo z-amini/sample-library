@@ -101,10 +101,21 @@ class BorrowViewSet(
             )
         return self.serializer_class
 
+    def check_permissions(self, request):
+        if (
+            self.action
+            in (
+                "start_borrow",
+                "terminate_borrow",
+            )
+            and not request.user.has_perm("books.change_borrow")
+        ):
+            raise PermissionDenied(_("You may not make this change."))
+
     def check_object_permissions(self, request, obj):
         if self.action == "start_borrow" and obj.borrowed_at is not None:
             raise PermissionDenied(_("The book is already delivered."))
-        elif self.action == "terminate_borrow":
+        if self.action == "terminate_borrow":
             if obj.borrowed_at is None:
                 raise PermissionDenied(_("The book is not delivered yet."))
             if obj.returned_at is not None:

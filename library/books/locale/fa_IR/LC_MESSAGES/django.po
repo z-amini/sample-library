@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-04 18:32+0430\n"
+"POT-Creation-Date: 2021-08-05 14:23+0430\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr "نوع"
 msgid "number of copies"
 msgstr "تعداد نسخه‌ها"
 
-#: models.py:45 models.py:69
+#: models.py:45 models.py:80
 msgid "book"
 msgstr "کتاب"
 
@@ -74,58 +74,78 @@ msgstr "کتاب"
 msgid "books"
 msgstr "کتاب‌ها"
 
-#: models.py:67
+#: models.py:78
 msgid "student"
 msgstr "دانش‌آموز"
 
-#: models.py:71
+#: models.py:82
 msgid "request date"
 msgstr "تاریخ درخواست"
 
-#: models.py:74
+#: models.py:85
 msgid "borrow date"
 msgstr "تاریخ امانت"
 
-#: models.py:76
+#: models.py:87
 msgid "duration"
 msgstr "مدت امانت"
 
-#: models.py:78
+#: models.py:89
 msgid "return date"
 msgstr "تاریخ بازگردانی"
 
-#: models.py:82 models.py:129
+#: models.py:93 models.py:143
 msgid "borrow"
 msgstr "امانت‌گیری"
 
-#: models.py:83
+#: models.py:94
 msgid "borrows"
 msgstr "امانت‌گیری‌ها"
 
-#: models.py:104
+#: models.py:115
 msgid "You have not returned previously borrowed book."
 msgstr "شما هنوز کتاب امانت گرفته پیشین را بازنگردانده‌اید."
 
-#: models.py:109
+#: models.py:120
 msgid "You has an unpaid delay penalty."
 msgstr "شما یک جریمه تاخیر پرداخت نشده دارید."
 
-#: models.py:113
+#: models.py:124
 msgid "No copy of this book is available right now."
 msgstr "هیچ نسخه از این کتاب در حال حاضر موجود نیست."
 
-#: models.py:131
+#: models.py:145
 msgid "amount"
 msgstr "مقدار"
 
-#: models.py:132
+#: models.py:146
 msgid "is it paid?"
 msgstr "پرداخت شده است؟"
 
-#: models.py:135
+#: models.py:149
 msgid "delay penalty"
 msgstr "جریمه تاخیر"
 
-#: models.py:136
+#: models.py:150
 msgid "delay  penalties"
 msgstr "جرایم تاخیر"
+
+#: serializers.py:33
+msgid "Duration is required"
+msgstr "مدت امانت ضروری است"
+
+#: views.py:113
+msgid "You may not make this change."
+msgstr "شما مجاز به این تغییر نیستید."
+
+#: views.py:117
+msgid "The book is already delivered."
+msgstr "کتاب پیش‌تر تحویل داده شده است."
+
+#: views.py:120
+msgid "The book is not delivered yet."
+msgstr "کتاب هنوز تحویل داده نشده است."
+
+#: views.py:122
+msgid "The book is already returned."
+msgstr "کتاب پیش‌تر بازگردانده شده است."
