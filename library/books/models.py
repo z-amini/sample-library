@@ -55,8 +55,19 @@ class Book(models.Model):
         )
         return out_copies.count() < self.copies
 
+    @property
     def related_books(self):
-        return Book.objects.filter(type=self.type, tags__in=self.tags)
+        return (
+            Book.objects.exclude(pk=self.pk)
+            .filter(type=self.type, tags__in=self.tags.all())
+            .annotate(score=models.Count("pk"))
+            .distinct()
+            .order_by("-score")
+        )
+
+    @property
+    def type_verbose(self):
+        return dict(self.TYPE_CHOICES).get(self.type)
 
 
 class Borrow(models.Model):
@@ -73,7 +84,7 @@ class Borrow(models.Model):
     borrowed_at = models.DateTimeField(
         null=True, blank=True, verbose_name=_("borrow date")
     )
-    duration = models.DurationField(null=True, blank=True, verbose_name=_("duration"))
+    duration = models.IntegerField(null=True, blank=True, verbose_name=_("duration"))
     returned_at = models.DateTimeField(
         null=True, blank=True, verbose_name=_("return date")
     )
@@ -96,7 +107,7 @@ class Borrow(models.Model):
     def is_overdue(self):
         if not self.borrowed_at:
             return False
-        return self.out_days > self.duration.days
+        return self.out_days > self.duration
 
     def clean_student(self):
         already_borrowed = self.student.borrow_set.filter(returned_at__isnull=True)
@@ -112,15 +123,18 @@ class Borrow(models.Model):
         if not self.book.is_available:
             raise ValidationError(_("No copy of this book is available right now."))
 
-    @transaction.atomic
-    def save(self, *args, **kwargs):
+    def clean(self):
         if not self.pk:
             self.clean_student()
             self.clean_book()
+
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        self.clean()
         super(Borrow, self).save(*args, **kwargs)
         if self.is_overdue:
             DelayPenalty.objects.get_or_create(
-                borrow=self, defaults={"amount": self.out_days * 1000}
+                borrow=self, defaults={"amount": self.out_days * 1000, "is_paid": False}
             )
 
 
