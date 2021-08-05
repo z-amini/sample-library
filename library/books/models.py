@@ -134,7 +134,7 @@ class Borrow(models.Model):
         super(Borrow, self).save(*args, **kwargs)
         if self.is_overdue:
             DelayPenalty.objects.get_or_create(
-                borrow=self, defaults={"amount": self.out_days * 1000, "is_paid": False}
+                borrow=self, defaults={"amount": (self.out_days - self.duration) * 1000, "is_paid": False}
             )
 
 
